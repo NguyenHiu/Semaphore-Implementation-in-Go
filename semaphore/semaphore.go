@@ -113,11 +113,14 @@ func (s *Semaphore) VerifyProof(proof *groth16_bn254.Proof, sProof SemaphoreProo
 }
 
 // TODO Implement CheckMessage logic
+// In real applications such as Voting, a valid message is one of the candidates
 func (s *Semaphore) CheckMessage(message *big.Int) bool {
 	return true
 }
 
 // TODO implement CheckScope logic
+// In real applications such as Voting, the scope may be the identity of
+// the current round, or the big integer format of the title string "Town President Election", etc.
 func (s *Semaphore) CheckScope(scope *big.Int) bool {
 	return true
 }
