@@ -6,7 +6,7 @@ import (
 	"math/rand/v2"
 	"testing"
 
-	"github.com/NguyenHiu/semaphore-implementation-in-go/semaphore"
+	"github.com/NguyenHiu/semaphore-implementation-in-go/leanIMT"
 	"github.com/consensys/gnark-crypto/ecc"
 	"github.com/consensys/gnark-crypto/ecc/bn254/fr"
 	"github.com/consensys/gnark-crypto/ecc/bn254/fr/mimc"
@@ -44,7 +44,7 @@ func TestBinaryMerkleRoot(t *testing.T) {
 	for i := 0; i < n; i++ {
 		leaves = append(leaves, big.NewInt(rand.Int64N(1000)))
 	}
-	imt, err := semaphore.NewLeanIMT(mimcHashFunc, leaves)
+	imt, err := leanIMT.NewLeanIMT(mimcHashFunc, leaves)
 	assert.NoError(err)
 	merkleProof, err := imt.GenerateProof(0)
 	assert.NoError(err)
@@ -77,7 +77,7 @@ func TestBinaryMerkleRoot(t *testing.T) {
 
 // validateIMT validates the integrity of the LeanIMT by ensuring that each parent node
 // is correctly computed from its child Nodes using the Poseidon hash function.
-func validateIMT(t *testing.T, imt *semaphore.LeanIMT) {
+func validateIMT(t *testing.T, imt *leanIMT.LeanIMT) {
 	for i := 0; i < imt.Depth(); i++ {
 		for j := 0; j < len(imt.Nodes[i]); j += 2 {
 			parentIdx := j / 2

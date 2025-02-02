@@ -1,7 +1,6 @@
-package semaphore
+package leanIMT
 
 import (
-	"fmt"
 	"math/big"
 	"math/rand/v2"
 	"testing"
@@ -16,23 +15,23 @@ func TestInsert(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, imt.Nodes, [][]*big.Int{})
 
-	err = imt.Insert(big.NewInt(randomInt64()))
+	err = imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	imt.Insert(big.NewInt(randomInt64()))
+	imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	imt.Insert(big.NewInt(randomInt64()))
+	imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	imt.Insert(big.NewInt(randomInt64()))
+	imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	imt.Insert(big.NewInt(randomInt64()))
+	imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 }
@@ -43,22 +42,22 @@ func TestInsertMany(t *testing.T) {
 	require.NoError(t, err)
 
 	// Insert some Nodes
-	err = imt.Insert(big.NewInt(randomInt64()))
+	err = imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	err = imt.Insert(big.NewInt(randomInt64()))
+	err = imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
-	err = imt.Insert(big.NewInt(randomInt64()))
+	err = imt.Insert(randomBigInt())
 	require.NoError(t, err)
 	validateIMT(t, imt)
 
 	n := rand.IntN(10)
 	leaves := []*big.Int{}
 	for i := 0; i < n; i++ {
-		leaves = append(leaves, big.NewInt(randomInt64()))
+		leaves = append(leaves, randomBigInt())
 	}
 
 	err = imt.InsertMany(leaves)
@@ -80,7 +79,7 @@ func TestUpdate(t *testing.T) {
 
 	// Update a leaf
 	idx := rand.IntN(imt.Size())
-	newVal := big.NewInt(randomInt64())
+	newVal := randomBigInt()
 	err = imt.Update(newVal, idx)
 	require.NoError(t, err)
 
@@ -221,33 +220,16 @@ func verifyMerkleProof(t *testing.T, proof *MerkleProof) {
 	require.Equal(t, proof.Root, root)
 }
 
-// printNodes prints out the tree for debuging
-func printNodes(imt *LeanIMT) {
-	k := 3
-
-	for i := len(imt.Nodes) - 1; i >= 0; i-- {
-		for j := 0; j < len(imt.Nodes[i]); j++ {
-			strData := imt.Nodes[i][j].String()
-			l := len(strData)
-			if l > 3 {
-				strData = fmt.Sprintf("%v..%v", strData[:k], strData[l-k:l])
-			}
-			fmt.Printf("[%v]  ", strData)
-		}
-		fmt.Println()
-	}
-}
-
-// randomInt64 generates a random int64 number within the range of 0 to 1000.
-func randomInt64() int64 {
-	return rand.Int64N(1000)
+// randomBigInt generates a random big integer
+func randomBigInt() *big.Int {
+	return big.NewInt(rand.Int64N(1000))
 }
 
 // randomBigIntArray generates an array of random big int
 func randomBigIntArray(n int) []*big.Int {
 	res := []*big.Int{}
 	for i := 0; i < n; i++ {
-		res = append(res, big.NewInt(randomInt64()))
+		res = append(res, randomBigInt())
 	}
 	return res
 }

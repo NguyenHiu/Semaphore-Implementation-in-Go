@@ -12,8 +12,8 @@ type Semaphore struct {
 	MerkleProofLength   frontend.Variable
 	MerkleProofIndices  [MAX_DEPTH]frontend.Variable
 	MerkleProofSiblings [MAX_DEPTH]frontend.Variable
-	Message             frontend.Variable
-	Scope               frontend.Variable
+	Message             frontend.Variable `gnark:",public"`
+	Scope               frontend.Variable `gnark:",public"`
 	DummySquare         frontend.Variable `gnark:",public"`
 	MerkleRoot          frontend.Variable `gnark:",public"`
 	Nullifier           frontend.Variable `gnark:",public"`
